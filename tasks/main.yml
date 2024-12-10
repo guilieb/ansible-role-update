@@ -11,17 +11,8 @@
     service: "dnf-automatic.timer"
   when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int == 8) or
         (ansible_distribution == "RedHat" and ansible_distribution_major_version|int == 8) or
+        (ansible_distribution == "AlmaLinux" and ansible_distribution_major_version|int >= 8) or
         (ansible_distribution == "Fedora" and ansible_distribution_major_version|int >= 30)
-
-- name: "update − set facts for current distribution is using yum"
-  set_fact:
-    package: "yum-cron"
-    config_path: yum/yum-cron.conf
-    config_var: "{{ yum_automatic }}"
-    service: "yum-cron"
-  when:
-    - ansible_os_family == "RedHat"
-    - ansible_distribution_major_version|int == 7
 
 - name: "update − install {{ package }}"
   package: name="{{ package }}" state=present
