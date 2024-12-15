@@ -1,32 +1,29 @@
 ---
+- name: Update − system packages
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+    only_upgrade: true
 
-- name: "update − system packages"
-  package: name="*" state=latest
+- name: Update − install dnf-automatic
+  ansible.builtin.package:
+    name:
+      - dnf-automatic
+    state: present
 
-- name: "update − set facts for current distribution if using dnf"
-  set_fact:
-    package: "dnf-automatic"
-    config_path: dnf/automatic.conf
-    config_var: "{{ dnf_automatic }}"
-    service: "dnf-automatic.timer"
-  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version|int == 8) or
-        (ansible_distribution == "RedHat" and ansible_distribution_major_version|int == 8) or
-        (ansible_distribution == "AlmaLinux" and ansible_distribution_major_version|int >= 8) or
-        (ansible_distribution == "Fedora" and ansible_distribution_major_version|int >= 30)
-
-- name: "update − install {{ package }}"
-  package: name="{{ package }}" state=present
-
-- name: "update − copy {{ package }} configuration"
-  template:
+- name: Update − copy dnf-automatic configuration
+  ansible.builtin.template:
     src: automatic.conf.j2
-    dest: "/etc/{{ config_path }}"
+    dest: /etc/dnf/automatic.conf
     owner: root
     group: root
-    mode: 0644
-    backup: yes
+    mode: "0644"
+    backup: true
   vars:
-    automatic: "{{ config_var }}"
+    automatic: "{{ dnf_automatic }}"
 
-- name: "update − enable {{ service }}"
-  service: name="{{ service }}" state=started enabled=yes
+- name: Update − enable dnf-automatic.timer
+  ansible.builtin.service:
+    name: dnf-automatic.timer
+    state: started
+    enabled: true

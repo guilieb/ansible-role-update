@@ -1,36 +1,8 @@
 # `ansible-role-update`: update system and configure automatic updates
 
-Update the system (all) and install an automatic package updater (`yum-cron` or `dnf-automatic`) depending on the target OS.
+Update the system (all) and install an automatic package updater (`dnf-automatic`).
 
 ### Role Variables
-
-If the target system is CentOS 7 or RHEL 7, `yum-cron` will be installed, configuration below:
-
-```yml
-yum_automatic:
-  base:
-    debuglevel: -2
-    mdpolicy: 'group:main'
-  commands:
-    apply_updates: false
-    download_updates: true
-    random_sleep: 0
-    update_cmd: default
-    update_messages: true
-  email:
-    email_from: root@localhost
-    email_host: localhost
-    email_to: root
-  emitters:
-    emit_via: stdio
-    output_width: 80
-    system_name: None
-  groups:
-    group_list: None
-    package_types:
-      - mandatory
-      - default
-```
 
 If the target system is CentOS or RHEL > 7 or Fedora, `dnf-automatic` will be used instead, configuration below:
 ```yaml

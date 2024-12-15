@@ -3,7 +3,7 @@
 yum_automatic:
   base:
     debuglevel: -2
-    mdpolicy: 'group:main'
+    mdpolicy: group:main
   commands:
     apply_updates: false
     download_updates: true
