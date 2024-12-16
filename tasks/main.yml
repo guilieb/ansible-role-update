@@ -3,7 +3,7 @@
   ansible.builtin.package:
     name: "*"
     state: latest
-    only_upgrade: true
+    update_only: true
 
 - name: Update − install dnf-automatic
   ansible.builtin.package:
